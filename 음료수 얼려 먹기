@@ -1,0 +1,57 @@
+// DFS 음료수 얼려 먹기 변형
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int ice[11][11];
+int visited[11][11];
+vector<int> areas;
+
+int N;
+
+int dx[4] = { -1,0,1,0 };
+int dy[4] = { 0,-1,0,1 };
+
+int dfs(int x, int y) {
+	visited[x][y] = 1;
+	int area = 1;
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+		if (nx >= 0 && nx < N && ny >= 0 && ny < N && ice[nx][ny] == 1 && visited[nx][ny] == 0) {
+			area += dfs(nx, ny);
+		}
+	}
+	return area;
+}
+
+int main() {
+
+	cin >> N;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cin >> ice[i][j];
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if (ice[i][j] == 1 && visited[i][j] == 0) {
+				areas.push_back(dfs(i, j));
+			}
+		}
+	}
+
+	cout << areas.size() << endl;
+
+	sort(areas.begin(), areas.end());
+
+	for (int area : areas) {
+		cout << area << " ";
+	}
+	return 0;
+}
